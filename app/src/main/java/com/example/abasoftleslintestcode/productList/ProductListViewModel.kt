@@ -1,43 +1,59 @@
 package com.example.abasoftleslintestcode.productList
 
-import android.graphics.Movie
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import com.example.abasoftleslintestcode.pojo.SearchProductMobile
+import android.app.Application
+import androidx.lifecycle.*
+import com.example.abasoftleslintestcode.application.MyApplication
+import com.example.abasoftleslintestcode.retrofit.ApiInterface
+import com.example.abasoftleslintestcode.room.ProductList
 import kotlinx.coroutines.*
+import java.lang.Exception
 
-class ProductListViewModel
-    @ViewModelInject
-    constructor(
-        private val repository: ProductListRepository,
-        @Assisted private val  savedStateHandle: SavedStateHandle
-    ):ViewModel()
+
+class ProductListViewModel(application: Application) :AndroidViewModel(application)
 {
-
-
     val errorMessage = MutableLiveData<String>()
-    val movieList = MutableLiveData<List<SearchProductMobile>>()
+    var productList = MutableLiveData<List<ProductList>>()
     var job: Job? = null
 
     val loading = MutableLiveData<Boolean>()
 
-    fun getAllMovies() {
-        job = CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getAllProducts()
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                   // movieList.postValue(response.body())
-                    loading.value = false
-                } else {
-                    onError("Error : ${response.message()} ")
+    val repository= (application as MyApplication).productListRepository
+    fun getAllProducts() {
+        try {
+
+
+            job = CoroutineScope(Dispatchers.IO).launch {
+                val response = repository?.getAllProducts(ApiInterface.RetrofitClient.getApi())
+                withContext(Dispatchers.Main) {
+                    if (response != null) {
+                        if (response.isSuccessful) {
+                            //                    movieList.postValue(response.body())
+                            repository?.insert(response.body())
+                            loading.value = false
+                        } else {
+                            onError("Error : ${response.message()} ")
+                        }
+                    }
+                }
+            }
+        }catch (e:Exception){
+
+        }
+    }
+
+    fun getProductsFromCache(): LiveData<List<ProductList>> {
+        viewModelScope.launch {
+            if (repository != null) {
+
+                var response = repository.getAllProductsFromCache()
+                 response.collect{
+                    productList.value= it
                 }
             }
         }
-
+        return productList
     }
+
 
     private fun onError(message: String) {
         errorMessage.value = message
@@ -49,4 +65,10 @@ class ProductListViewModel
         job?.cancel()
     }
 
+
 }
+
+
+
+
+

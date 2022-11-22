@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao {
@@ -12,5 +13,8 @@ interface ProductDao {
     suspend fun insert (productList: ProductList) : Long
 
     @Query( "select * from products ")
-    suspend fun getProducts() : List<ProductList>
+     fun getProducts() : Flow<List<ProductList>>
+
+    @Query("delete from products")
+     fun deleteAll()
 }

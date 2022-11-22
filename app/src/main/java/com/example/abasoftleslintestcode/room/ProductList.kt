@@ -15,31 +15,31 @@ data class ProductList(
    var Title: String? ,
 
    @ColumnInfo(name ="OriginalImage")
-   var OriginalImage: String? ,
+   var OriginalImage: String ,
 
    @ColumnInfo(name ="ThumbImage")
-   var ThumbImage: String? ,
+   var ThumbImage: String ,
 
    @ColumnInfo(name ="Finalprice")
-   var Finalprice: Int? ,
+   var Finalprice: Int ,
 
    @ColumnInfo(name ="Mrp")
-   var Mrp: Int? ,
+   var Mrp: Int ,
 
    @ColumnInfo(name ="CartQuantity")
-   var CartQuantity: Int? ,
+   var CartQuantity: Int ,
 
    @ColumnInfo(name ="TotalCount")
-   var TotalCount: Int? ,
+   var TotalCount: Int ,
 
    @ColumnInfo(name ="CartId")
-   var CartId: Int? ,
+   var CartId: Int ,
 
    @ColumnInfo(name ="CartCount")
-   var CartCount: Int? ,
+   var CartCount: Int ,
 
    @ColumnInfo(name ="Unit")
-   var Unit: String?
+   var Unit: String
    
    
    
