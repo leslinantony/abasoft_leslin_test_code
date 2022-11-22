@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:replace="android:icon"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AbasoftLeslinTestCode">
         <activity
             android:name=".productList.ProductListActivity"

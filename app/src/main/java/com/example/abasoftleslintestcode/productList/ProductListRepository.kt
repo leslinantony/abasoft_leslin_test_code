@@ -7,6 +7,7 @@ import com.example.abasoftleslintestcode.retrofit.ApiInterface
 import com.example.abasoftleslintestcode.room.ProductDao
 import com.example.abasoftleslintestcode.room.ProductList
 import kotlinx.coroutines.flow.Flow
+import okhttp3.RequestBody
 
 class ProductListRepository
 constructor(
@@ -14,7 +15,7 @@ constructor(
 //    private val apiInterface: ApiInterface
 ) {
 
-    suspend fun getAllProducts(api: ApiInterface?) = api?.getProducts()
+    suspend fun getAllProducts(api: ApiInterface?, body: RequestBody) = api?.getProducts(body)
 
 
      fun getAllProductsFromCache(): Flow<List<ProductList>> {

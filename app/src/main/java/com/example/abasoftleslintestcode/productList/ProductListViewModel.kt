@@ -1,11 +1,15 @@
 package com.example.abasoftleslintestcode.productList
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.abasoftleslintestcode.application.MyApplication
 import com.example.abasoftleslintestcode.retrofit.ApiInterface
 import com.example.abasoftleslintestcode.room.ProductList
 import kotlinx.coroutines.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import org.json.JSONObject
 import java.lang.Exception
 
 
@@ -18,31 +22,52 @@ class ProductListViewModel(application: Application) :AndroidViewModel(applicati
     val loading = MutableLiveData<Boolean>()
 
     val repository= (application as MyApplication).productListRepository
+
+
     fun getAllProducts() {
-        try {
+        job = CoroutineScope(Dispatchers.IO).launch {
+            val jsonParams: MutableMap<String?, Any?> = HashMap()
+            jsonParams["CustomerId"] = "sNhZrOJ/BHc="
+            jsonParams["SocietyId"] = "1"
+            jsonParams["PageNumber"] = "1"
+            jsonParams["PageSize"] = "5"
 
 
-            job = CoroutineScope(Dispatchers.IO).launch {
-                val response = repository?.getAllProducts(ApiInterface.RetrofitClient.getApi())
+            val body = RequestBody.create(
+                "application/json; charset=utf-8".toMediaTypeOrNull(),
+                JSONObject(jsonParams).toString()
+            )
+
+            try {
+
+
+                val response =
+                    repository.getAllProducts(ApiInterface.RetrofitClient.getInstance(), body)
                 withContext(Dispatchers.Main) {
                     if (response != null) {
                         if (response.isSuccessful) {
-                            //                    movieList.postValue(response.body())
                             repository?.insert(response.body())
+                            //Toast.makeText(getApplication(), response.body().toString(), Toast.LENGTH_SHORT).show()
                             loading.value = false
                         } else {
                             onError("Error : ${response.message()} ")
                         }
                     }
                 }
-            }
-        }catch (e:Exception){
+            }catch (e: Exception)
+            {
 
+            }
         }
+
     }
 
+
+
+
+
     fun getProductsFromCache(): LiveData<List<ProductList>> {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.Main).launch {
             if (repository != null) {
 
                 var response = repository.getAllProductsFromCache()

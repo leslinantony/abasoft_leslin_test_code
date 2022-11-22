@@ -23,10 +23,12 @@ class ProductListActivity : AppCompatActivity() {
 //            this,
 //            ViewModelProvider.AndroidViewModelFactory(application)
 //        ).get(ProductListViewModel::class.java)
+        //viewModel.getAllProducts()
         viewModel.getAllProducts()
 
         viewModel.getProductsFromCache().observe(this, Observer {
 
+            var d= it
             Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
 
         })
