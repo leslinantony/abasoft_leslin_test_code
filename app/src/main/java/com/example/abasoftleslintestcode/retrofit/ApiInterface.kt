@@ -1,6 +1,7 @@
 package com.example.abasoftleslintestcode.retrofit
 
 import com.example.abasoftleslintestcode.pojo.SearchProductResponse
+import com.example.abasoftleslintestcode.product_description.pojo.GetProductDetails
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,6 +21,9 @@ interface ApiInterface {
 
     @POST("listproducts")
     suspend fun getProducts(@Body body: RequestBody?): Response<SearchProductResponse>
+
+    @POST("productdetails")
+    suspend fun getProductDetails(@Body body: RequestBody?): Response<GetProductDetails>
 
     class RetrofitClient {
 
