@@ -24,11 +24,23 @@ class ProductDescriptionActivity : AppCompatActivity() {
         binding.viewModel= viewModel
 
         var intent= intent
-        viewModel.productId.set(intent.getStringExtra("societyId"))
-        viewModel.societyId.set(intent.getStringExtra("productId"))
+        viewModel.productId.set(intent.getStringExtra("productId"))
+       // viewModel.societyId.set(intent.getStringExtra("productId"))
 
         viewModel.getProductDetails()
+        intent.getStringExtra("productId")?.let { viewModel.isItemAddedToCart(it.toInt()) }
 
+        viewModel.getProductsFromCache().observe(this, Observer {
+            for (product in it)
+            {
+                if (product.SocietyproductID == (viewModel.productId.get()?.toInt() ?: 0))
+                {
+                    viewModel.itemCount.set(product.CartQuantity.toString())
+                    viewModel.count= product.CartQuantity
+                }
+            }
+
+        })
         viewModel.productDetails.observe(this, Observer {
 
             binding.tvDescription.text= it.ProductDetails.productInfoDetails[0].Description

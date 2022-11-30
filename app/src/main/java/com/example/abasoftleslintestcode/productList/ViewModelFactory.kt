@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 
 //class MyViewModelFactory constructor(private val repository: ProductListRepository): ViewModelProvider.Factory {
 //
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//    override fu <T : ViewModel> create(modelClass: Class<T>): T {
 //        return if (modelClass.isAssignableFrom(ProductListViewModel::class.java!!)) {
 //            ProductListViewModel(this.repository) as T
 //        } else {

@@ -238,7 +238,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="8dp"
-
+                        android:onClick="@{viewModel::clickAddToCart}"
                         android:layout_marginBottom="24dp"
                         android:background="@drawable/bg_rbutton"
                         app:layout_constraintBottom_toBottomOf="parent"

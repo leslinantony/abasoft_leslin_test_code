@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = arrayOf(ProductList::class), version = 1, exportSchema = false)
+@Database(entities = [ProductList::class,Cart::class], version = 1, exportSchema = false)
 abstract class ProductDataBase: RoomDatabase() {
 
     abstract fun productDao(): ProductDao
@@ -26,7 +26,7 @@ abstract class ProductDataBase: RoomDatabase() {
             {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    ProductDataBase::class.java, "member_database"
+                    ProductDataBase::class.java, DATABASE_NAME
                 )
                         .addCallback(ProductDatabaseCallBack(scope))
                     .build()
